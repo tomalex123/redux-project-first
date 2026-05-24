@@ -14,6 +14,7 @@ export interface NewBook {
   title: string;
   author: string;
   id: string;
+  isFavorite?: boolean;
 }
 
 export const addBook = (newBook: NewBook) => { 
@@ -29,7 +30,12 @@ export const deleteBook = (bookId: string) => {
     payload: bookId
   }
 };
-
+export const toggleFavorite = (id: string) => {
+  return {
+    type: actionType.TOGGLE_FAVORITE,
+    payload: id
+  }
+}
 export const findBook = (bookId: string) => {
   return {
     type: actionType.FIND_BOOK,

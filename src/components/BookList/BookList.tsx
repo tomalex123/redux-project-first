@@ -4,6 +4,9 @@ import {type NewBook } from "../../redux/books/actionCreators";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../redux/store";
 import { deleteBook } from "../../redux/books/actionCreators";
+import { toggleFavorite } from "../../redux/books/actionCreators";
+import { MdFavorite } from "react-icons/md";
+import { MdFavoriteBorder } from "react-icons/md";
 import "./BookList.css";
 
 export default function BookList() {
@@ -11,6 +14,10 @@ export default function BookList() {
   // Get the dispatch function from the Redux store
   const dispatch = useDispatch<AppDispatch>();
   let i = 0;
+
+  const handleToggleFavorite = (id: string) => {
+    dispatch(toggleFavorite(id))
+  }
   return (
     <div className="app-block book-list">
       <h2>Book List</h2>
@@ -18,11 +25,16 @@ export default function BookList() {
         <p>No books yet.</p>
       ) : (
         <ul>
-            {books.map(({ title, author, id }: NewBook) => (
+            {books.map(({ title, author, id,isFavorite }: NewBook) => (
             <li key={id}>
                 <div className="book-info"><span>{++i}</span> {title} by <strong>{author}</strong> </div>
                 <div className="book-actions">
-                    <button onClick={() => dispatch(deleteBook(id))}>Delete</button>
+                  <button className="favorite" onClick={() => handleToggleFavorite(id)}>
+                      {isFavorite ? <MdFavorite color="magenta"/>:
+                      <MdFavoriteBorder/>
+                      }
+                    </button>
+                    <button className="delete" onClick={() => dispatch(deleteBook(id))}>Delete</button>
                 </div>
             </li>
           ))}
