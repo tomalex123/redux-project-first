@@ -12,6 +12,10 @@ interface DeleteBookAction {
   type: typeof actionType.DELETE_BOOK;
   payload: string;
 }
+interface ToggleFavoriteAction {
+  type: typeof actionType.TOGGLE_FAVORITE;
+  payload: string; // или number
+}
 
 interface FindBookAction {
   id: string;
@@ -19,20 +23,22 @@ interface FindBookAction {
   payload: string;
 }
 
-interface ToggleFavoriteAction {
-  type: typeof actionType.TOGGLE_FAVORITE;
-  payload: string; // или number
+export interface BooksState {
+  books: NewBook[];
+  foundBook: NewBook | null;
 }
+
+
 interface DefaultAction {
   type: string;
   payload?: never;
 }
 
-
 type BookAction = AddBookAction | DeleteBookAction | FindBookAction | ToggleFavoriteAction | DefaultAction;
 
-const initialState: NewBook[] = [
-  {
+const initialState: BooksState = {
+  foundBook: null,
+  books:  [{
   "id": "1",
   "title": "Atomic Habits",
   "author": "James Clear",
@@ -91,23 +97,32 @@ const initialState: NewBook[] = [
     "title": "0Man's Search for Meaning",
     "author": "Viktor E. Frankl",
     "isFavorite":  false
-  }];
+  }]
+}
+ ;
 
-const booksReducer = (state = initialState, action: BookAction): NewBook[] => {
+const booksReducer = (state = initialState, action: BookAction ): BooksState => {
   switch (action.type) {
     case actionType.ADD_BOOK:
-      return action.payload ? [...state, action.payload] : state;
+      return { ...state, books: action.payload ? [...state.books, action.payload] : state.books };
     case actionType.DELETE_BOOK:
-      return state.filter(book => book.id !== action.payload);  
+      return { ...state, books: state.books.filter(book => book.id !== action.payload) };
       case actionType.TOGGLE_FAVORITE:
-        return state.map(book => {
+        return { ...state, books: state.books.map(book => {
           if (book.id === action.payload) {
             return { ...book, isFavorite: !book.isFavorite };
           }
           return book;
-        });
-    case actionType.FIND_BOOK:
-      return state.filter(book => book.id === action.payload);
+        }) };
+    case actionType.FIND_BOOK: {
+      const query = (action as FindBookAction).payload.toLowerCase();
+      const found = state.books.find(
+        book =>
+          book.title.toLowerCase().includes(query) ||
+          book.author.toLowerCase().includes(query)
+      );
+      return { ...state, foundBook: found ?? null };
+    }
     default:
       return state;
   }

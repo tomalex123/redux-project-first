@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore} from "@reduxjs/toolkit";
 import booksReducer from "./books/reducer";
 
 // Configure the Redux store with the books reducer, which will manage the state of the books in the application.

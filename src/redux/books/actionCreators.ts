@@ -36,9 +36,8 @@ export const toggleFavorite = (id: string) => {
     payload: id
   }
 }
-export const findBook = (bookId: string) => {
-  return {
-    type: actionType.FIND_BOOK,
-    payload: bookId
-  }
-};
+export const findBook = (query: string) => ({
+  type: actionType.FIND_BOOK,
+  payload: query
+});
+
