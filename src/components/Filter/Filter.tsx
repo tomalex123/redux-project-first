@@ -1,3 +1,5 @@
+//import * as actionType from "./actionType";
+
 export default function Filter() {
   return (
     <div className="app-block filter">

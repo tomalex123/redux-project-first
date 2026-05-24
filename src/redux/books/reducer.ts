@@ -4,7 +4,7 @@ import type { NewBook } from "./actionCreators";
 interface AddBookAction {
   id: string;
   type: string;
-  payload?:NewBook;
+  payload:NewBook;
 }
 
 interface DeleteBookAction {
@@ -13,9 +13,21 @@ interface DeleteBookAction {
   payload: string;
 }
 
-type BookAction = AddBookAction | DeleteBookAction;
+interface FindBookAction {
+  id: string;
+  type: typeof actionType.FIND_BOOK;
+  payload: string;
+}
+interface DefaultAction {
+  type: string;
+  payload?: never;
+}
 
-const initialState: NewBook[] = [{
+
+type BookAction = AddBookAction | DeleteBookAction | FindBookAction | DefaultAction;
+
+const initialState: NewBook[] = [
+  {
   "id": "1",
   "title": "Atomic Habits",
   "author": "James Clear"
@@ -72,6 +84,8 @@ const booksReducer = (state = initialState, action: BookAction): NewBook[] => {
       return action.payload ? [...state, action.payload] : state;
     case actionType.DELETE_BOOK:
       return state.filter(book => book.id !== action.payload);  
+    case actionType.FIND_BOOK:
+      return state.filter(book => book.id === action.payload);
     default:
       return state;
   }

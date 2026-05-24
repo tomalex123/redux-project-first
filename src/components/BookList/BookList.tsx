@@ -7,7 +7,8 @@ import { deleteBook } from "../../redux/books/actionCreators";
 import "./BookList.css";
 
 export default function BookList() {
-  const books = useSelector((state: BookState) => state.books);
+  const books = useSelector((state: BookState) => state.books); // Access the books state from the Redux store
+  // Get the dispatch function from the Redux store
   const dispatch = useDispatch<AppDispatch>();
   let i = 0;
   return (
@@ -20,7 +21,9 @@ export default function BookList() {
             {books.map(({ title, author, id }: NewBook) => (
             <li key={id}>
                 <div className="book-info"><span>{++i}</span> {title} by <strong>{author}</strong> </div>
-                <button onClick={() => dispatch(deleteBook(id))}>Delete</button>
+                <div className="book-actions">
+                    <button onClick={() => dispatch(deleteBook(id))}>Delete</button>
+                </div>
             </li>
           ))}
         </ul>
