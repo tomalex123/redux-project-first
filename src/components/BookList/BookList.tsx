@@ -10,7 +10,7 @@ import { MdFavoriteBorder } from "react-icons/md";
 import "./BookList.css";
 
 export default function BookList() {
-  const books = useSelector((state: BookState) => Object.values(state.books) as NewBook[]); // Access the books state from the Redux store as an array
+  const books = useSelector((state: BookState) => state.books.books); // Access the books array from the books reducer state
   // Get the dispatch function from the Redux store
   const dispatch = useDispatch<AppDispatch>();
   let i = 0;

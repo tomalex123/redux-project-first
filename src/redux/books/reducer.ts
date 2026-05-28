@@ -94,7 +94,7 @@ const initialState: BooksState = {
   },
   {
     "id": "10",
-    "title": "0Man's Search for Meaning",
+    "title": "Man's Search for Meaning",
     "author": "Viktor E. Frankl",
     "isFavorite":  false
   }]
